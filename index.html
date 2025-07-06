@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PECCVAI - Image Watermarking</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Google Sans', Arial, sans-serif;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            height: auto;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            filter: brightness(100%);
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 1200px; /* Increased width */
+            margin: 2rem auto;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            transform: scale(0); /* Initial scale of 0 */
+            opacity: 0;
+            transition: transform 2s ease, opacity 2s ease; /* Slower transition */
+        }
+
+        .image-comparison {
+            display: flex;
+            height: 600px; /* Increased height */
+            width: 100%;
+        }
+
+        .carousel-container.visible {
+            transform: scale(1); /* Scale to 1 when visible */
+            opacity: 1;
+        }
+
+        .image-comparison {
+            display: flex;
+            height: 500px;
+            width: 100%;
+        }
+
+        .image-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-label {
+            position: absolute;
+            top: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+        }
+
+        .original-label {
+            left: 1rem;
+        }
+
+        .watermarked-label {
+            right: 1rem;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1.5rem;
+            color: #333;
+            z-index: 10;
+        }
+
+        .carousel-nav:hover {
+            background: white;
+        }
+
+        .prev-button {
+            left: 1rem;
+        }
+
+        .next-button {
+            right: 1rem;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 500;
+            margin: 2rem 0;
+            color: #1a1a1a;
+        }
+
+        .content-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .content-wrapper-text {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            text-align: justify;
+        }
+
+        .text-content {
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Hero Section -->
+    <section class="hero h-screen">
+        <video autoplay muted loop>
+            <source src="./static/videos/PECCVAI.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="absolute inset-0 flex items-center justify-center text-center">
+            <div>
+                <h5 class="text-xl mb-4">AI Research</h5>
+                <h1 class="text-7xl font-medium mb-4">PECCVAI</h1>
+                <h3 class="text-2xl">Identifying AI Generated Content</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-16">
+        <div class="content-wrapper">
+            <div class="content-wrapper-text">
+                <h2 class="section-title" style="font-size: 40px;">
+                    <i><span style="color: #007BFF;">PECCAVI</span></i> : Visual Paraphrase Attack <span style="color: #007BFF;">Safe</span> and <span style="color: #007BFF;">Distortion Free</span> Image Watermarking Technique for AI-Generated Images
+                </h2>
+            </div>
+            <div class="carousel-container" id="carousel">
+                <div class="image-comparison">
+                    <div class="image-wrapper original-image">
+                        <img src="/static/Examples/Example_1_original.jpg" alt="Original Image">
+                        <span class="image-label original-label">Original</span>
+                    </div>
+                    <div class="image-wrapper watermarked-image">
+                        <img src="/static/Examples/Example_1_watermarked.jpg" alt="Watermarked Image">
+                        <span class="image-label watermarked-label">Watermarked</span>
+                    </div>
+                </div>
+                <button class="carousel-nav prev-button">←</button>
+                <button class="carousel-nav next-button">→</button>
+                <div class="carousel-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+            <!-- Description Text -->
+            <div class="content-wrapper-text">
+                <p style="color: gray;">
+                    The line between real and AI-generated visual content is becoming increasingly blurred. As state-of-the-art image generation and enhancement models like Stable Diffusion 3 and Imagen3 advance, AI-generated images are becoming nearly indistinguishable from real ones to the naked eye. These models offer users a creative platform with limitless possibilities, but they also pose significant risks when exploited by malicious actors.
+                </p>
+                <p style="color: gray;" class="mt-4">
+                    The pace at which the research community is working on improving these models is unthinkable and hence this makes it more crucial than ever to focus on advancements in visual watermarking area.
+                </p>
+                
+                <!-- Buttons section -->
+                <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
+                    <!-- Code Button with link -->
+                    <a href="https://anonymous.4open.science/r/PECCAVI" target="_blank" style="text-decoration: none;">
+                        <button class="custom-button">
+                            Code
+                        </button>
+                    </a>
+                    
+                    <!-- Arixv Button with link -->
+                    <a href="https://www.google.com" target="_blank" style="text-decoration: none;">
+                        <button class="custom-button">
+                            Arixv
+                        </button>
+                    </a>
+                    
+                    <!-- Dataset Button with link -->
+                    <a href="https://www.google.com" target="_blank" style="text-decoration: none;">
+                        <button class="custom-button">
+                            Dataset
+                        </button>
+                    </a>
+                </div>
+            </div>
+            
+            <style>
+                .custom-button {
+                    background-color: rgba(0, 0, 0, 0.1); /* Initial semi-transparent background */
+                    border: none;
+                    border-radius: 2rem;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    transition: background-color 0.3s; /* Smooth transition */
+                }
+            
+                .custom-button:hover {
+                    background-color:rgb(55, 150, 252,0.8) /* Solid background on hover */
+                }
+            </style>
+            
+            
+        </div>
+    </section>
+
+    <section class="Visual_Paraphrase" style="margin-bottom: 20px;">
+        <div class="content-wrapper">
+            <div class="text-content mt-8">
+                <h1 class="section-title" style="font-size: 50px;"><span style="color: #3796fc;">Visual Paraphrase</span></h1>
+                <div class="content-wrapper-text">
+                    <p style="color: gray;">
+                        Visual Paraphrase is a technique that generates variations of an image while maintaining the same semantic content but altering its visual presentation, similar to how paraphrasing works in natural language. The effectiveness of this technique depends on two main parameters: Paraphrasing Strength (s) and Guidance Scale (gs). Paraphrasing Strength ranges from 0 to 1, determining how much the new image deviates from the original. A higher value (s = 1) results in a more distinct image, while a lower value (s = 0) keeps the image closer to the original. Guidance Scale controls how closely the new image follows the original text prompt, with higher values ensuring closer adherence. Optimal results are achieved when the paraphrasing strength is low (s ≤ 0.4) and the guidance scale is between 4 and 7.
+                    </p>
+                </div>
+                <div class="Visual Paraphrase Image" style="padding-top: 2rem;padding-bottom: 2rem; width:1000px;">
+                    <img src="./static/images/Visual Paraphrase.png" alt="Visual Paraphrase Example" style="border-radius:0rem;"/>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="Watermark" style="margin-bottom: 2rem;">
+        <div class="content-wrapper">
+            <h1 class="section-title" style="font-size: 50px"><span style="color: #3796fc;">Where does <i>PECCAVI</i> Watermark and How?</span></h1>
+            <div class="content-wrapper-text">
+                <p style="color:gray;">
+                    <i>PECCAVI</i> embeds watermarks in specific regions of an image known as <b>Non-Melting Points (NMPs)</b>. These strategically selected areas are the most crucial and resistant to adversarial attacks, including visual paraphrasing. The watermarking process begins by generating several paraphrased versions of the original image. For each version, the most important areas are identified using an advanced method called the XRAI algorithm. The most significant regions are then selected, and the system focuses on these areas while disregarding less important ones.
+                    
+                    Once the critical regions are identified, bounding boxes are drawn around them. These boxes are aggregated from all paraphrased versions and undergo a filtering process to select the most distinct, non-overlapping areas. This ensures that the watermark is placed in areas that are sufficiently large to be effective yet not too small to lose their impact. The approach also ensures that there are no overlapping boxes that could interfere with the watermark’s integrity.
+                    
+                    By embedding the watermark within these Non-Melting Points, <i>PECCAVI</i> ensures that the watermark remains robust and resistant to adversarial manipulation while preserving the overall visual quality of the image.
+                </p>
+            </div>
+            <div class="Non_Melting_Point_Image" style="padding-top: 2rem;padding-bottom: 2rem; width:1000px; border-radius: 2rem;">
+                <img src="./static/images/NonMelting Point.png" alt="" style="border-radius: 2rem;" />
+            </div>
+            <div class="content-wrapper-text">
+                <p style="color:gray;">
+                    Once the Non-Melting Points (NMPs) are identified, PECCAVI employs several watermarking strategies to enhance resilience against attacks. Four distinct methods were tested: (1) baseline watermarking with state-of-the-art techniques such as ZoDiac, Stable Signature, and WAM, (2) adjusting the strength of the watermark, (3) single-channel watermarking, and (4) multi-channel watermarking. Among these, multi-channel watermarking proved to be the most effective, as embedding watermarks across multiple channels significantly increased resistance to attacks like visual paraphrasing. Additionally, varying the watermark strength, determined by the distance between the rings, further increased the system’s robustness, with smaller distances resulting in stronger, more resilient watermarks.
+                </p>
+            </div>
+            <div class="Non_Melting_Point_Image" style="padding-top: 2rem;padding-bottom: 2rem; width:1000px; border-radius: 2rem;">
+                <img src="./static/images/Watermark.png" alt="" style="border-radius: 2rem;" />
+            </div>
+        </div>
+    </section>
+    
+    <section class="Results" style="margin-bottom: 2rem;">
+        <div class="content-wrapper" style="max-width: fit-content;">
+            <h1 class="section-title" style="font-size: 50px;"><span style="color: #3796fc;">Results</span></h1>
+            
+    
+            <!-- Subtitle -->
+            <h2 style="font-size: 24px; text-align: center; margin-bottom: 1rem;">
+                Watermark Detection Scores after Paraphrase attack
+            </h2>
+    
+            <!-- New div for multiple columns -->
+            <div class="results-columns" style="display: flex; justify-content: space-between; gap: 1rem;">
+                <!-- Column 1: ZoDiac -->
+                <div class="column" style="flex: 1; text-align: center;">
+                    <div class="title-row" style="font-size: 18px; font-weight: 500;">ZoDiac</div>
+                    <div class="value-row" style="font-size: 50px; font-weight: 500;">0.81</div>
+                </div>
+    
+                <!-- Column 2: WAM -->
+                <div class="column" style="flex: 1; text-align: center;">
+                    <div class="title-row" style="font-size: 18px; font-weight: 500;">WAM</div>
+                    <div class="value-row" style="font-size: 50px; font-weight: 500;">0.63</div>
+                </div>
+    
+                <!-- Column 3: PECCAVI with an up arrow -->
+                <div class="column" style="flex: 1; text-align: center;">
+                    <div class="title-row" style="font-size: 18px; font-weight: 500;">PECCAVI</div>
+                    <div class="value-row" style="font-size: 50px; font-weight: 500;"><span style="color: #3796fc;">0.91 &#8593;</span></div>
+                </div>
+    
+                <!-- Column 4: Stable Signature -->
+                <div class="column" style="flex: 1; text-align: center;">
+                    <div class="title-row" style="font-size: 18px; font-weight: 500;">Stable Signature</div>
+                    <div class="value-row" style="font-size: 50px; font-weight: 500;">0.65</div>
+                </div>
+    
+                <!-- Column 5: DwtDctSVD -->
+                <div class="column" style="flex: 1; text-align: center;">
+                    <div class="title-row" style="font-size: 18px; font-weight: 500;">DwtDctSVD</div>
+                    <div class="value-row" style="font-size: 50px; font-weight: 500;">0.65</div>
+                </div>
+            </div>
+
+
+            <div class="content-wrapper-text" style="margin-bottom: 10rem;padding-top: 2rem;">
+                <p style="color:gray;">
+                    PECCAVI showcases consistent <b>10% improvement</b> over the current SOTA models like ZoDiac and WAM in different Dewatermarking tests and Paraphrase Attacks.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-black py-8">
+        <div class="content-wrapper text-center">
+            <p>© 2024 PECCVAI. All rights reserved.</p>
+            <p class="mt-2 text-gray-400">
+                Licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+            </p>
+            <p class="mt-2 text-gray-400">Built by Shreyas Dixit</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer to trigger the carousel effect
+        const carousel = document.getElementById('carousel');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    carousel.classList.add('visible');
+                } else {
+                    carousel.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.5 });
+        observer.observe(carousel);
+
+        // Carousel functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = [
+                { 
+                    original: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/Examples/Example_1.jpg', 
+                    watermarked: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/WM_Examples/Example_1.jpg' 
+                },
+                { 
+                    original: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/Examples/Example_2.jpg', 
+                    watermarked: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/WM_Examples/Example_2.png' 
+                },
+                { 
+                    original: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/Examples/Example_3.jpg', 
+                    watermarked: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/WM_Examples/Example_3.jpg'
+                },
+                { 
+                    original: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/Examples/Example_4.png   ', 
+                    watermarked: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/WM_Examples/Example_4.png' 
+                }
+                // Add more image objects as needed
+            ];
+
+            let currentSlide = 0;
+            const dots = document.querySelectorAll('.dot');
+            const prevButton = document.querySelector('.prev-button');
+            const nextButton = document.querySelector('.next-button');
+
+            function updateSlide() {
+                const originalImg = document.querySelector('.original-image img');
+                const watermarkedImg = document.querySelector('.watermarked-image img');
+                originalImg.src = images[currentSlide].original;
+                watermarkedImg.src = images[currentSlide].watermarked;
+
+                dots.forEach((dot, index) => {
+                    if(index < images.length) {
+                        dot.classList.toggle('active', index === currentSlide);
+                    }
+                });
+            }
+
+            prevButton.addEventListener('click', () => {
+                currentSlide = (currentSlide - 1 + images.length) % images.length;
+                updateSlide();
+            });
+
+            nextButton.addEventListener('click', () => {
+                currentSlide = (currentSlide + 1) % images.length;
+                updateSlide();
+            });
+
+            dots.forEach((dot, index) => {
+                if(index < images.length) {
+                    dot.addEventListener('click', () => {
+                        currentSlide = index;
+                        updateSlide();
+                    });
+                }
+            });
+
+            // Initialize the first slide
+            updateSlide();
+        });
+    </script>
+</body>
+</html>
