@@ -15,13 +15,13 @@
         body {
             font-family: 'Google Sans', Arial, sans-serif;
         }
-
+    
         .hero {
             position: relative;
             overflow: hidden;
             height: auto;
         }
-
+    
         .hero video {
             position: absolute;
             top: 50%;
@@ -34,50 +34,44 @@
             transform: translate(-50%, -50%);
             filter: brightness(100%);
         }
-
+    
         .carousel-container {
             position: relative;
-            max-width: 1200px; /* Increased width */
+            max-width: 1200px;
             margin: 2rem auto;
             overflow: hidden;
             border-radius: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             background-color: #fff;
-            transform: scale(0); /* Initial scale of 0 */
+            transform: scale(0);
             opacity: 0;
-            transition: transform 2s ease, opacity 2s ease; /* Slower transition */
+            transition: transform 2s ease, opacity 2s ease;
         }
-
-        .image-comparison {
-            display: flex;
-            height: 600px; /* Increased height */
-            width: 100%;
-        }
-
+    
         .carousel-container.visible {
-            transform: scale(1); /* Scale to 1 when visible */
+            transform: scale(1);
             opacity: 1;
         }
-
+    
         .image-comparison {
             display: flex;
             height: 500px;
             width: 100%;
         }
-
+    
         .image-wrapper {
             flex: 1;
             position: relative;
             overflow: hidden;
         }
-
+    
         .image-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
-
+    
         .image-label {
             position: absolute;
             top: 1rem;
@@ -87,15 +81,15 @@
             border-radius: 2rem;
             font-size: 0.875rem;
         }
-
+    
         .original-label {
             left: 1rem;
         }
-
+    
         .watermarked-label {
             right: 1rem;
         }
-
+    
         .carousel-nav {
             position: absolute;
             top: 50%;
@@ -114,19 +108,19 @@
             color: #333;
             z-index: 10;
         }
-
+    
         .carousel-nav:hover {
             background: white;
         }
-
+    
         .prev-button {
             left: 1rem;
         }
-
+    
         .next-button {
             right: 1rem;
         }
-
+    
         .carousel-dots {
             position: absolute;
             bottom: 1rem;
@@ -135,7 +129,7 @@
             display: flex;
             gap: 0.5rem;
         }
-
+    
         .dot {
             width: 12px;
             height: 12px;
@@ -144,11 +138,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
+    
         .dot.active {
             background: white;
         }
-
+    
         .section-title {
             text-align: center;
             font-size: 2rem;
@@ -156,26 +150,98 @@
             margin: 2rem 0;
             color: #1a1a1a;
         }
-
+    
         .content-wrapper {
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 1rem;
         }
-
+    
         .content-wrapper-text {
             max-width: 800px;
             margin: 0 auto;
             padding: 0 1rem;
             text-align: justify;
         }
-
+    
         .text-content {
             line-height: 1.6;
             color: #333;
             text-align: justify;
         }
-    </style>
+    
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .hero video {
+                min-width: 100%;
+                min-height: auto;
+                width: 100%;
+                height: auto;
+            }
+    
+            .carousel-container {
+                margin: 1rem;
+                max-width: 100%;
+            }
+    
+            .image-comparison {
+                flex-direction: column;
+                height: 300px; /* Adjust height for mobile */
+            }
+    
+            .carousel-nav {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2rem;
+            }
+    
+            .carousel-dots {
+                bottom: 0.5rem;
+            }
+    
+            .section-title {
+                font-size: 1.5rem;
+            }
+    
+            .content-wrapper {
+                padding: 0 0.5rem;
+            }
+    
+            .content-wrapper-text {
+                max-width: 100%;
+                padding: 0 0.5rem;
+            }
+    
+            .text-content {
+                font-size: 1rem; /* Slightly smaller font for mobile */
+            }
+        }
+    
+        /* Extra small mobile styles */
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.25rem;
+            }
+    
+            .carousel-nav {
+                width: 30px;
+                height: 30px;
+                font-size: 1rem;
+            }
+    
+            .carousel-dots {
+                bottom: 0.3rem;
+            }
+    
+            .image-comparison {
+                height: 250px; /* Further adjust height for very small screens */
+            }
+    
+            .text-content {
+                font-size: 0.95rem;
+            }
+        }
+    </style>    
 </head>
 <body class="bg-gray-50">
     <!-- Hero Section -->
@@ -204,11 +270,11 @@
             <div class="carousel-container" id="carousel">
                 <div class="image-comparison">
                     <div class="image-wrapper original-image">
-                        <img src="/static/Examples/Example_1_original.jpg" alt="Original Image">
+                        <img src="./static/Examples/Example_1.jpg" alt="Original Image">
                         <span class="image-label original-label">Original</span>
                     </div>
                     <div class="image-wrapper watermarked-image">
-                        <img src="/static/Examples/Example_1_watermarked.jpg" alt="Watermarked Image">
+                        <img src="./static/Examples/Example_1.jpg" alt="Watermarked Image">
                         <span class="image-label watermarked-label">Watermarked</span>
                     </div>
                 </div>
@@ -400,20 +466,20 @@
         document.addEventListener('DOMContentLoaded', function() {
             const images = [
                 { 
-                    original: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/Examples/Example_1.jpg', 
-                    watermarked: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/WM_Examples/Example_1.jpg' 
+                    original: './static/Examples/Example_1.jpg', 
+                    watermarked: './static/WM_Examples/Example_1.jpg' 
                 },
                 { 
-                    original: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/Examples/Example_2.jpg', 
-                    watermarked: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/WM_Examples/Example_2.png' 
+                    original: './static/Examples/Example_2.jpg', 
+                    watermarked: './static/WM_Examples/Example_2.png' 
                 },
                 { 
-                    original: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/Examples/Example_3.jpg', 
-                    watermarked: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/WM_Examples/Example_3.jpg'
+                    original: './static/Examples/Example_3.jpg', 
+                    watermarked: './static/WM_Examples/Example_3.jpg'
                 },
                 { 
-                    original: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/Examples/Example_4.png   ', 
-                    watermarked: '/home/shreyas/Desktop/Shreyas/Projects/PANDA_Website/static/WM_Examples/Example_4.png' 
+                    original: './static/Examples/Example_4.png   ', 
+                    watermarked: './static/WM_Examples/Example_4.png' 
                 }
                 // Add more image objects as needed
             ];
