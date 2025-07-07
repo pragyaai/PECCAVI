@@ -1,14 +1,17 @@
-# Nerfies
+# PECCAVI Image
 
-This is the repository that contains source code for the [Nerfies website](https://nerfies.github.io).
+This is the repository that contains source code for the [PECCAVI Image](https://pragyaai.github.io/PECCAVI/).
 
-If you find Nerfies useful for your work please cite:
+If you find PECCAVI Image useful for your work please cite:
 ```
-@article{park2021nerfies
-  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
-  title     = {Nerfies: Deformable Neural Radiance Fields},
-  journal   = {ICCV},
-  year      = {2021},
+@inproceedings{Dixit2025_PECCAVI,
+  author       = {Siddharth Dixit and Adeel Aziz and Vivek Sharma and Aman Chadha and Aishwarya Reganti and Aishwarya Sheth and Amitava Das},
+  title        = {PECCAVI – Visual Paraphrase Attack Safe and Distortion-Free Image Watermarking Technique for AI-Generated Images},
+  booktitle    = {ICCV 2025 (submitted)},
+  series       = {ICCV},
+  year         = {2025},
+  note         = {A*},
+  abstract     = {PECCAVI introduces a novel distortion-free watermarking scheme resilient to visual paraphrasing attacks, where an image’s semantics are preserved but styling is changed. Through dual-space embedding and signal-preserving transformations, PECCAVI achieves over 90% watermark robustness under various paraphrasing attack scenarios, while maintaining visual fidelity.}
 }
 ```
 
